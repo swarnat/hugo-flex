@@ -6,6 +6,9 @@
   {{ $css_list := slice $site_css }}
   {{ range . }}
     {{ $custom_css := resources.Get . }}
+    {{ if eq $custom_css.MediaType.Type "text/x-scss" }}
+      {{ $custom_css = $custom_css | css.Sass }}
+    {{ end }}    
     {{ $css_list = $css_list | append $custom_css }}
   {{ end }}
   {{ $site_css = $css_list | resources.Concat "css/base.css" }}
