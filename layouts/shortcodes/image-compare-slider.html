@@ -1,0 +1,27 @@
+{{ resources.Get "libs/image-compare-viewer/image-compare-viewer.min.js" | .Page.Store.SetInMap "js" "image-compare-viewer" }}
+{{ resources.Get "libs/image-compare-viewer/image-compare-viewer.min.css" | .Page.Store.SetInMap "css" "image-compare-viewer" }}
+
+{{ resources.Get "libs/image-compare-viewer/custom-slider.css" | .Page.Store.SetInMap "css" "image-compare-viewer-custom-css" }}
+{{ resources.Get "libs/image-compare-viewer/slider-initialize.js" | .Page.Store.SetInMap "js" "image-compare-viewer-init" }}
+
+{{- $description := .Get "description" -}}
+
+{{- $left := .Get "left" -}}
+{{- $right := .Get "right" -}}
+
+{{- $labelLeft := .Get "label-left" -}}
+{{- $labelRight := .Get "label-right" -}}
+
+{{- $altLeft := .Get "alt-left" -}}
+{{- $altRight := .Get "alt-right" -}}
+
+
+<div class="image-compare-slider" data-label-left="{{ $labelLeft }}" data-label-right="{{ $labelRight }}">
+    <img src="{{ $left }}" alt="{{ $altLeft }}" />
+    <img src="{{ $right }}" alt="{{ $altRight }}" />
+  </div>
+  {{ if ne $description ""}}
+  <div class="image-slider-compare-description">
+    {{ $description }}
+  </div>
+  {{ end }}

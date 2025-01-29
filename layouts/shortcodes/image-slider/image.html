@@ -1,0 +1,14 @@
+{{ $src := .Get "src" }}
+
+{{ $alt := .Get "alt" }}
+{{ $description := .Get "description" }}
+
+<li class="splide__slide">
+    <img src="{{ $src }}" alt="{{ $alt }}">
+
+    {{ if ne $description ""}}
+    <div>
+      {{ $description }}
+    </div>
+    {{ end }}  
+</li>

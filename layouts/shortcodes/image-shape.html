@@ -1,0 +1,11 @@
+{{- $align := .Get "align" -}}
+{{ if ne (.Get "title") ""}}
+    {{- $align := "right" -}}
+{{end}}
+
+
+{{- $src := .Get "src" -}}
+{{- $width := .Get "width" -}}
+{{- $height := .Get "height" -}}
+
+<img src="{{ $src }}" class="image-shape-{{ $align }}" style="shape-outside: url('{{ $src }}');clip-path: url('{{ $src }}');" width="{{ $width }}" height="{{ $height }}" />
