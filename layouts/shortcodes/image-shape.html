@@ -1,11 +1,16 @@
+{{ resources.Get "libs/simple-lightbox/simple-lightbox.min.css" | .Page.Store.SetInMap "css" "simple-lightbox-css" }}
+
 {{- $align := .Get "align" -}}
 {{ if ne (.Get "title") ""}}
     {{- $align := "right" -}}
 {{end}}
 
 
+{{- $lightbox := .Get "lightbox" -}}
 {{- $src := .Get "src" -}}
 {{- $width := .Get "width" -}}
 {{- $height := .Get "height" -}}
 
+<a href="{{ $src }}" class="lightbox" onclick="return false;">
 <img src="{{ $src }}" class="image-shape-{{ $align }}" style="shape-outside: url('{{ $src }}');clip-path: url('{{ $src }}');" width="{{ $width }}" height="{{ $height }}" />
+</a>
