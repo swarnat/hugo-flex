@@ -10,7 +10,12 @@
   {{ block "load_page_assets" . }}
     {{ $noop := .Content }}
   {{ end }}
+  
+  {{ partialCached "pwa/assets/meta" . }}  
+
   {{ partial "assets.html" . }}
+
+  
 </head>
 
 <body>
@@ -23,6 +28,9 @@
     </div>
   </main>
   {{ partialCached "footer.html" . }}
+  
+  {{ partialCached "pwa/assets/sw" . }}
+  
 </body>
 
 </html>

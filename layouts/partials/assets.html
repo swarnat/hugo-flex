@@ -4,6 +4,8 @@
   {{- else }}
     {{- with . | minify | fingerprint }}
       <link href="{{ .RelPermalink }}" rel="stylesheet" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+      
+      {{ partial "pwa/functions/precache" (dict "URL" .RelPermalink "Page" $.Page) }}
     {{- end }}
   {{- end }}
 {{ end }}
@@ -14,6 +16,8 @@
   {{- else }}
     {{- with . | minify | fingerprint }}
       <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+
+      {{ partial "pwa/functions/precache" (dict "URL" .RelPermalink "Page" $.Page) }}
     {{- end }}
   {{- end }}
 {{ end }}
