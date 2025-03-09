@@ -1,12 +1,50 @@
 {{ $src := .Get "src" }}
+{{ $image := "" }}
+{{ $resized := "" }}
+{{ $isRemote := or (hasPrefix $src "http://") (hasPrefix $src "https://") }}
 
 {{ $alt := .Get "alt" }}
 {{ $description := .Get "description" }}
 
-<li class="splide__slide">
-    <img src="{{ $src }}" alt="{{ $alt }}">
+{{/* Copied from image.html */}}
+{{ if $isRemote }}
+  {{ $image = resources.GetRemote $src }}
+{{ else }}
+  {{ $image = .Page.Resources.GetMatch $src }}
+{{ end }}
+{{ $resized := $image }}
+{{ $fullsized := $image }}
 
-    {{ if ne $description ""}}
+{{ if not $image }}
+  {{ errorf "Image '%s' not found for page %s" $src .Page.RelPermalink }}
+{{ end }}
+
+{{ $isSVG := eq $image.MediaType.SubType "svg" }}
+{{ $userHeight := .Get "height" }}
+
+{{ if and (not $isSVG) $userHeight }}
+  {{ $resized = $image.Resize (print "x" $userHeight) }}
+
+  {{ $maxSize := 1200 }}
+  {{ $width := $image.Width }}
+  {{ $height := $image.Height }}
+  {{ $resize := "" }}
+  
+  {{ if or (gt $width $maxSize) (gt $height $maxSize) }}
+    {{ if gt $width $height }}
+      {{ $resize = printf "%dx" $maxSize }}
+    {{ else }}
+      {{ $resize = printf "x%d" $maxSize }}
+    {{ end }}
+    {{ $fullsized = $image.Resize $resize }}
+  {{ end }}
+  
+{{ end }}
+<li class="splide__slide splide__image" data-fullurl="{{ $fullsized.RelPermalink }}" >
+
+  <img src="{{ $resized.RelPermalink }}" rel="splide_image" alt="{{ $alt }}">
+
+    {{- if ne $description "" -}}
     <div>
       {{ $description }}
     </div>

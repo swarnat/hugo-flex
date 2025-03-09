@@ -184,3 +184,7 @@ kbd:has(kbd) {
 .u-noboosting {
   max-height: 1000000px;
 }
+
+div.clearfix {
+  overflow: auto;
+}

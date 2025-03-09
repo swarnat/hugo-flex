@@ -4,7 +4,7 @@ languageCode: en-US
 theme: hugo-flex
 
 params:
-  color: teal           # Any color in CSS syntax
+  color: "#434c77"           # Any color in CSS syntax
   width: 42rem          # Any length in CSS syntax / leave empty to span page
   divider: \2500\2500   # Any string in CSS syntax / leave empty for no divider
   footer: >-            # HTML spaces (&#32;) are needed before HTML elements
@@ -52,8 +52,8 @@ markup:
 
 menu:
   main:
-    - name: About
-      pageRef: /about
+    - name: Pages
+      pageRef: /content
       weight: 1
     - name: Posts
       pageRef: /post
@@ -64,11 +64,7 @@ menu:
     - name: Categories
       pageRef: /categories
       weight: 4
-    - name: RSS
-      pageRef: /
-      weight: 5
-      params:
-        - format: rss
+
 
 outputFormats:
   rss:

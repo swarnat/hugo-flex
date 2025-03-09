@@ -1,0 +1,40 @@
+{{ resources.Get "libs/simple-lightbox/simple-lightbox.min.css" | .Page.Store.SetInMap "css" "simple-lightbox-css" }}
+
+
+{{ $marginTop := or (.Get "margin-top") "0" }}
+{{ $align := or (.Get "align") "none" }}
+{{ $title := or (.Get "title") "" }}
+
+{{ $src := .Get "src" }}
+
+{{ $image := .Page.Resources.Get $src }}
+{{ $resized := $image.Resize (print (.Get "width") "x") }}
+
+{{ $maxSize := 1000 }}
+{{ $width := $image.Width }}
+{{ $height := $image.Height }}
+{{ $resize := "" }}
+
+{{ $fullsized := $image }}
+{{ if or (gt $width $maxSize) (gt $height $maxSize) }}
+  {{ if gt $width $height }}
+    {{ $resize = printf "%dx" $maxSize }}  {{/* Begrenzung auf 1000px Breite */}}
+  {{ else }}
+    {{ $resize = printf "x%d" $maxSize }}  {{/* Begrenzung auf 1000px Höhe */}}
+  {{ end }}
+  {{ $fullsized = $image.Resize $resize }}
+{{ end }}
+
+
+<div class="hugo-image-container align-{{ $align }}">
+    <a href="{{ $fullsized.RelPermalink }}" class="lightbox" onclick="return false;">
+        <img src="{{ $resized.RelPermalink }}" alt="{{ .Get "alt" }}" title="{{ .Get "title" }}" class="hugo-image" style="margin-top:{{ $marginTop }}px;">
+    </a>
+    {{- if ne $title "" -}}
+    <div class="image-subtitle">
+        <a href="{{ $fullsized.RelPermalink }}" class="lightbox" onclick="return false;">
+        {{ $title }}
+        </a>
+    </div>
+    {{ end }}
+</div>
