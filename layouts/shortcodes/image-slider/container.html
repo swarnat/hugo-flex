@@ -1,4 +1,5 @@
 {{ $perPage := or (.Get "pagesize") "1" }}
+{{ $height := or (.Get "height") "" }}
 
 {{ $version := "4.1.3" }}
 {{ resources.Get (printf "libs/splide-%s/js/splide.min.js" $version) | .Page.Store.SetInMap "js" "splide-lib-js" }}
@@ -19,7 +20,18 @@
   <script type="text/javascript">
     var splideData;
     if(!splideData) splideData = {};
-    splideData["splide_{{ $randomID }}"] = {
+    options = {
       perPage: {{ $perPage }}
+    };
+    if(window.outerWidth > 600) {
+    {{- if ne $height "" -}}
+    options["fixedHeight"] = "{{ $height }}px";
+    {{ end -}}
+      options["autoWidth"] = true;    
+    } else {
+      if(options.perPage > 2) {
+        options.perPage = 2;
+      }
     }
+    splideData["splide_{{ $randomID }}"] = options
   </script>

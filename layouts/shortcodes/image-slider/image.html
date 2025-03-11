@@ -4,7 +4,12 @@
 {{ $isRemote := or (hasPrefix $src "http://") (hasPrefix $src "https://") }}
 
 {{ $alt := .Get "alt" }}
-{{ $description := .Get "description" }}
+{{ $description := or (.Get "description") "" }}
+
+{{ if eq $description "" }}
+  {{ $description = or (.Get "title") "" }}
+{{ end }}
+
 
 {{/* Copied from image.html */}}
 {{ if $isRemote }}
@@ -45,7 +50,7 @@
   <img src="{{ $resized.RelPermalink }}" rel="splide_image" alt="{{ $alt }}">
 
     {{- if ne $description "" -}}
-    <div>
+    <div class="image-subtitle">
       {{ $description }}
     </div>
     {{ end }}  
