@@ -5,7 +5,10 @@ if (splideData) {
       let options = Object.assign({
         perPage: 1
       }, splideData[id])
-      new Splide("#" + id, options).mount();
+
+      var splideObj = new Splide("#" + id, options)
+
+      splideObj.mount();
     }
   });
 }
