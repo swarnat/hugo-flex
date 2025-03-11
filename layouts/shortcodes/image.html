@@ -5,10 +5,24 @@
 {{ $align := or (.Get "align") "none" }}
 {{ $title := or (.Get "title") "" }}
 
+{{ $width := or (.Get "width") "" }}
+{{ $height := or (.Get "height") "" }}
+
 {{ $src := .Get "src" }}
 
 {{ $image := .Page.Resources.Get $src }}
-{{ $resized := $image.Resize (print (.Get "width") "x") }}
+{{ $resized := $image }}
+
+{{ if not $image }}
+  {{ errorf "Image '%s' not found for page %s" $src .Page.RelPermalink }}
+{{ end }}
+{{ if and (ne $width "") (ne $height "") }}
+  {{ $resized = $image.Resize (print $width "x" $height) }}
+{{ else if ne $width "" }}
+  {{ $resized = $image.Resize (print $width "x") }}
+{{ else if ne $height "" }}
+  {{ $resized = $image.Resize (print "x" $height) }}
+{{ end }}
 
 {{ $maxSize := 1000 }}
 {{ $width := $image.Width }}
@@ -26,7 +40,7 @@
 {{ end }}
 
 
-<div class="hugo-image-container align-{{ $align }}">
+<div class="hugo-image-container align-{{ $align }}" style="width:{{ $resized.Width }}px; height:{{ $resized.Height }}">
     <a href="{{ $fullsized.RelPermalink }}" class="lightbox" onclick="return false;">
         <img src="{{ $resized.RelPermalink }}" alt="{{ .Get "alt" }}" title="{{ .Get "title" }}" class="hugo-image" style="margin-top:{{ $marginTop }}px;">
     </a>
