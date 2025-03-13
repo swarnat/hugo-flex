@@ -89,7 +89,9 @@ kbd:has(kbd) {
 }
 
 .Heading-title {
-  margin: 1.5rem 0.5rem 0 0;
+  padding: 1.5rem 0.5rem 0 0;
+  margin: 0;
+
 }
 
 .Heading-link {
