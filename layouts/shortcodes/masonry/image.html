@@ -1,0 +1,58 @@
+{{ $src := .Get "src" }}
+{{ $image := "" }}
+{{ $resized := "" }}
+{{ $isRemote := or (hasPrefix $src "http://") (hasPrefix $src "https://") }}
+
+{{ $alt := .Get "alt" }}
+{{ $description := or (.Get "description") "" }}
+{{ $cols := or (.Get "cols") "1" }}
+
+{{ if eq $description "" }}
+  {{ $description = or (.Get "title") "" }}
+{{ end }}
+
+
+{{/* Copied from image.html */}}
+{{ if $isRemote }}
+  {{ $image = resources.GetRemote $src }}
+{{ else }}
+  {{ $image = .Page.Resources.GetMatch $src }}
+{{ end }}
+{{ $resized := $image }}
+{{ $fullsized := $image }}
+
+{{ if not $image }}
+  {{ errorf "Image '%s' not found for page %s" $src .Page.RelPermalink }}
+{{ end }}
+
+{{ $isSVG := eq $image.MediaType.SubType "svg" }}
+  {{ $resized = $image.Resize "400x" }}
+
+  {{ $maxSize := 1200 }}
+  {{ $width := $image.Width }}
+  {{ $height := $image.Height }}
+  {{ $resize := "" }}
+  
+  {{ if or (gt $width $maxSize) (gt $height $maxSize) }}
+    {{ if gt $width $height }}
+      {{ $resize = printf "%dx" $maxSize }}
+    {{ else }}
+      {{ $resize = printf "x%d" $maxSize }}
+    {{ end }}
+    {{ $fullsized = $image.Resize $resize }}
+  {{ end }}
+  
+
+{{ $ratio := div (float $resized.Height) (float $resized.Width) }}
+{{ $rows := math.Floor (mul $ratio 30) }}
+
+<li class="hugo_masonry_image" data-height="{{ $resized.Height }}" data-width="{{ $resized.Width }}" data-ratio="{{ $ratio }}" style="grid-row: span {{ $rows }}; grid-column: span {{ $cols }};" data-fullurl="{{ $fullsized.RelPermalink }}" >
+
+  <img src="{{ $resized.RelPermalink }}" alt="{{ $alt }}">
+
+    {{- if ne $description "" -}}
+    <div class="image-subtitle">
+      {{ $description }}
+    </div>
+    {{ end }}  
+</li>
