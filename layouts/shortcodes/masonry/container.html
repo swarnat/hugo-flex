@@ -1,6 +1,7 @@
 {{ resources.Get "css/masonry.css" | .Page.Store.SetInMap "css" "masonry-js" }}
+{{ $cols := or (.Get "cols") "4" }}
 
-<div class="hugo_masonry hugo_masonry_4">
+<div class="hugo_masonry hugo_masonry_{{ $cols }}">
     {{- .Inner -}}
   </div>
 

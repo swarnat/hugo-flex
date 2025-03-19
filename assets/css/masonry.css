@@ -1,8 +1,16 @@
 .hugo_masonry {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 10px;
     grid-auto-flow: row dense;
+}
+.hugo_masonry.hugo_masonry_3 {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+.hugo_masonry.hugo_masonry_4 {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+.hugo_masonry.hugo_masonry_5 {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 .hugo_masonry li {
     list-style: none;
