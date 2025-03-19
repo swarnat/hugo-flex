@@ -42,12 +42,12 @@
 
 <div class="hugo-image-container align-{{ $align }}" style="width:{{ $resized.Width }}px;">
     <a href="{{ $fullsized.RelPermalink }}" class="lightbox" onclick="return false;">
-        <img src="{{ $resized.RelPermalink }}" alt="{{ .Get "alt" }}" title="{{ .Get "title" }}" class="hugo-image" style="margin-top:{{ $marginTop }}px;">
+        <img src="{{ $resized.RelPermalink }}" alt="{{ .Get "alt" }}" title="{{ replace $title "\\n" "<br />" | safeHTML }}" class="hugo-image" style="margin-top:{{ $marginTop }}px;">
     </a>
     {{- if ne $title "" -}}
     <div class="image-subtitle">
         <a href="{{ $fullsized.RelPermalink }}" class="lightbox" onclick="return false;">
-        {{ $title }}
+        {{ replace $title "\\n" "<br />" | safeHTML }}
         </a>
     </div>
     {{ end }}
